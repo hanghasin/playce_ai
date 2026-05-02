@@ -76,8 +76,7 @@ export function TheCalibration({ location, onBack, onProceed }: TheCalibrationPr
     
     // Show recalculating status
     setIsRecalculating(true)
-    const skillLabel = field === 'skillLevel' ? value : calibration.skillLevel
-    setStatusMessage(`Recalculating safety indices and logistics for ${skillLabel} level...`)
+    setStatusMessage('Updating recommendations...')
     
     setTimeout(() => {
       setIsRecalculating(false)
@@ -186,25 +185,25 @@ export function TheCalibration({ location, onBack, onProceed }: TheCalibrationPr
           ${contentVisible ? 'opacity-100' : 'opacity-0'}
         `}
       >
-        {/* Header - CALIBRATION */}
+        {/* Header - REFINE YOUR INTENT */}
         <div className="text-center mb-12 md:mb-16">
           <h1 
-            className="text-white mb-4"
+            className="text-white mb-6"
             style={{ 
               fontFamily: "'Editorial New', Georgia, serif", 
               fontWeight: 100,
-              fontSize: 'clamp(2.5rem, 10vw, 6rem)',
-              lineHeight: 0.9,
-              letterSpacing: '-0.02em',
+              fontSize: 'clamp(2rem, 8vw, 4.5rem)',
+              lineHeight: 1.1,
+              letterSpacing: '-0.01em',
             }}
           >
-            CALIBRATION
+            Refine Your Intent
           </h1>
           <p 
-            className="text-white/50 text-sm uppercase tracking-[0.15em]"
+            className="text-white/40 text-xs uppercase tracking-[0.2em] max-w-md mx-auto leading-relaxed"
             style={{ fontFamily: "'Monument Grotesk', Arial, sans-serif", fontWeight: 400 }}
           >
-            Define your profile to refine the matrix.
+            Tailor your experience. The matrix adapts to your preferences.
           </p>
         </div>
 
@@ -395,7 +394,7 @@ export function TheCalibration({ location, onBack, onProceed }: TheCalibrationPr
               WebkitBackdropFilter: 'blur(20px)',
             }}
           >
-            Proceed to Matrix
+            Continue
             <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
           </button>
         </div>
@@ -412,7 +411,7 @@ export function TheCalibration({ location, onBack, onProceed }: TheCalibrationPr
             className="text-[10px] text-white/20 uppercase tracking-[0.2em]"
             style={{ fontFamily: "'Monument Grotesk', Arial, sans-serif" }}
           >
-            Calibrating for {location.name}, {location.country}
+            Preparing {location.name}, {location.country}
           </p>
         </div>
       </div>
