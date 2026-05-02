@@ -138,9 +138,10 @@ export default function Home() {
         />
       )}
 
-      {currentPage === 'matrix' && selectedLocation && (
+      {currentPage === 'matrix' && selectedLocation && calibrationData && (
         <TheMatrix 
           location={selectedLocation}
+          calibration={calibrationData}
           onBack={handleBackToCalibration}
           onConfirm={handleConfirm}
         />
