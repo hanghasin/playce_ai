@@ -5,8 +5,9 @@ import { TheAbyss } from '@/components/playce/the-abyss'
 import { TheMatch } from '@/components/playce/the-match'
 import { TheCalibration } from '@/components/playce/the-calibration'
 import { TheMatrix } from '@/components/playce/the-matrix'
+import { TheJourney } from '@/components/playce/the-journey'
 
-type Page = 'abyss' | 'match' | 'calibration' | 'matrix'
+type Page = 'abyss' | 'match' | 'calibration' | 'matrix' | 'journey'
 
 interface MatrixLocationData {
   name: string
@@ -105,9 +106,28 @@ export default function Home() {
     }, 600)
   }, [])
 
-  const handleConfirm = useCallback(() => {
-    // Handle confirmation - could navigate to booking, show success, etc.
-    alert('Booking confirmed! Get ready for your adventure.')
+  // Proceed from matrix to journey (Page 5)
+  const handleProceedToJourney = useCallback(() => {
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('journey')
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  const handleBackToMatrix = useCallback(() => {
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('matrix')
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  const handleSaveToAccount = useCallback(() => {
+    // Handle save to account - could trigger auth flow or save to database
+    alert('Journey saved to your account!')
   }, [])
 
   return (
@@ -143,7 +163,16 @@ export default function Home() {
           location={selectedLocation}
           calibration={calibrationData}
           onBack={handleBackToCalibration}
-          onConfirm={handleConfirm}
+          onConfirm={handleProceedToJourney}
+        />
+      )}
+
+      {currentPage === 'journey' && selectedLocation && calibrationData && (
+        <TheJourney 
+          location={selectedLocation}
+          calibration={calibrationData}
+          onBack={handleBackToMatrix}
+          onSave={handleSaveToAccount}
         />
       )}
     </main>

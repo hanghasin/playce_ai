@@ -878,7 +878,7 @@ export function TheMatrix({ location, calibration, onBack, onConfirm }: TheMatri
             WebkitBackdropFilter: 'blur(10px)',
           }}
         >
-          Confirm This Move
+          Plan My Journey
         </button>
       </div>
     </div>
