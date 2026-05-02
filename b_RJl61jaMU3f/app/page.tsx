@@ -1,0 +1,110 @@
+'use client'
+
+import { useState, useCallback } from 'react'
+import { TheAbyss } from '@/components/playce/the-abyss'
+import { TheMatch } from '@/components/playce/the-match'
+import { TheMatrix } from '@/components/playce/the-matrix'
+
+type Page = 'abyss' | 'match' | 'matrix'
+
+interface MatrixLocationData {
+  name: string
+  country: string
+  activity: string
+  season: string
+  difficulty: string
+  vibe: string
+  image: string
+  womenFriendly: number
+  soloIndex: number
+  logistics: string[]
+  facilities: { name: string; available: boolean }[]
+  conditions: {
+    temp: string
+    waves?: string
+    snow?: string
+    visibility?: string
+  }
+}
+
+export default function Home() {
+  const [currentPage, setCurrentPage] = useState<Page>('abyss')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [matrixLocation, setMatrixLocation] = useState<MatrixLocationData | null>(null)
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query)
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('match')
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  const handleBackToAbyss = useCallback(() => {
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('abyss')
+      setSearchQuery('')
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  const handleBackToMatch = useCallback(() => {
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('match')
+      setMatrixLocation(null)
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  const handleViewDetails = useCallback((locationData: MatrixLocationData) => {
+    setMatrixLocation(locationData)
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('matrix')
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  const handleConfirm = useCallback(() => {
+    // Handle confirmation - could navigate to booking, show success, etc.
+    alert('Booking confirmed! Get ready for your adventure.')
+  }, [])
+
+  return (
+    <main 
+      className={`
+        min-h-screen bg-black
+        page-transition
+        ${isTransitioning ? 'page-blur-out' : ''}
+      `}
+    >
+      {currentPage === 'abyss' && (
+        <TheAbyss onSubmit={handleSearch} />
+      )}
+      
+      {currentPage === 'match' && (
+        <TheMatch 
+          searchQuery={searchQuery} 
+          onBack={handleBackToAbyss}
+          onViewDetails={handleViewDetails}
+        />
+      )}
+
+      {currentPage === 'matrix' && matrixLocation && (
+        <TheMatrix 
+          location={matrixLocation}
+          onBack={handleBackToMatch}
+          onConfirm={handleConfirm}
+        />
+      )}
+    </main>
+  )
+}
