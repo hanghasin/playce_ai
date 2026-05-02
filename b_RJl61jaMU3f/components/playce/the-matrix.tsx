@@ -219,18 +219,24 @@ export function TheMatrix({ location, calibration, onBack, onConfirm }: TheMatri
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
-      {/* Background Image - Heavily blurred */}
+      {/* Hero Background Image with gradient mask */}
       <div className="absolute inset-0 z-0">
         <Image
           src={location.image}
           alt={location.name}
           fill
-          className="object-cover"
+          className="object-cover object-center"
           style={{
-            filter: 'blur(60px) saturate(1.2)',
-            opacity: 0.12,
+            opacity: 0.35,
           }}
           priority
+        />
+        {/* Bottom-to-top gradient mask */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to top, rgba(0,0,0,1) 35%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0.1) 100%)',
+          }}
         />
       </div>
 
@@ -337,14 +343,15 @@ export function TheMatrix({ location, calibration, onBack, onConfirm }: TheMatri
             }}
           >
             <h3 
-              className="text-xs text-white/30 uppercase tracking-[0.2em] pb-3"
+              className="text-[11px] text-white/40 uppercase pb-3"
               style={{ 
                 fontFamily: "'Monument Grotesk', Arial, sans-serif", 
-                fontWeight: 400,
+                fontWeight: 500,
+                letterSpacing: '0.1em',
                 borderBottom: '0.5px solid rgba(255,255,255,0.1)',
               }}
             >
-              Vibe Index
+              VIBE INDEX
             </h3>
             
             {/* Women-Friendly */}
@@ -385,8 +392,8 @@ export function TheMatrix({ location, calibration, onBack, onConfirm }: TheMatri
 
             {/* Vibe description */}
             <p 
-              className="text-sm text-white/50 leading-relaxed"
-              style={{ fontFamily: "'Monument Grotesk', Arial, sans-serif", fontWeight: 400 }}
+              className="text-[14px] text-white/50"
+              style={{ fontFamily: "'Monument Grotesk', Arial, sans-serif", fontWeight: 400, lineHeight: 1.6 }}
             >
               {location.vibe}
             </p>
@@ -402,14 +409,15 @@ export function TheMatrix({ location, calibration, onBack, onConfirm }: TheMatri
             }}
           >
             <h3 
-              className="text-xs text-white/30 uppercase tracking-[0.2em] pb-3"
+              className="text-[11px] text-white/40 uppercase pb-3"
               style={{ 
                 fontFamily: "'Monument Grotesk', Arial, sans-serif", 
-                fontWeight: 400,
+                fontWeight: 500,
+                letterSpacing: '0.1em',
                 borderBottom: '0.5px solid rgba(255,255,255,0.1)',
               }}
             >
-              Female-Friendly Tips
+              FEMALE-FRIENDLY TIPS
             </h3>
             <div className="space-y-4">
               <div>
