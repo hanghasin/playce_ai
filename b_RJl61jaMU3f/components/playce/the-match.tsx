@@ -291,27 +291,41 @@ const activities: Activity[] = [
   },
 ]
 
+interface MatrixLocationData {
+  name: string
+  country: string
+  activity: string
+  season: string
+  difficulty: string
+  vibe: string
+  image: string
+  womenFriendly: number
+  soloIndex: number
+  logistics: string[]
+  facilities: { name: string; available: boolean }[]
+  conditions: {
+    temp: string
+    waves?: string
+    snow?: string
+    visibility?: string
+  }
+}
+
 interface TheMatchProps {
   searchQuery: string
   onBack: () => void
+  onViewDetails: (location: MatrixLocationData) => void
 }
 
-export function TheMatch({ searchQuery, onBack }: TheMatchProps) {
+export function TheMatch({ searchQuery, onBack, onViewDetails }: TheMatchProps) {
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null)
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
 
   const handleActivityClick = (activityId: string) => {
     if (selectedActivity === activityId) {
       setSelectedActivity(null)
-      setSelectedLocation(null)
     } else {
       setSelectedActivity(activityId)
-      setSelectedLocation(null)
     }
-  }
-
-  const handleLocationSelect = (location: Location) => {
-    setSelectedLocation(location)
   }
 
   const selectedActivityData = activities.find(a => a.id === selectedActivity)
@@ -433,22 +447,33 @@ export function TheMatch({ searchQuery, onBack }: TheMatchProps) {
 
             {/* Bento Grid - 3 large horizontal cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 h-auto md:h-[calc(100vh-220px)]">
-              {selectedActivityData.locations.map((location) => (
+              {selectedActivityData.locations.map((location) => {
+                // Convert to MatrixLocationData format
+                const locationData: MatrixLocationData = {
+                  name: location.name,
+                  country: location.country,
+                  activity: selectedActivityData.title,
+                  season: location.season,
+                  difficulty: location.difficulty,
+                  vibe: location.vibe,
+                  image: location.image,
+                  womenFriendly: location.womenFriendly,
+                  soloIndex: location.soloIndex,
+                  logistics: location.logistics,
+                  facilities: location.facilities,
+                  conditions: location.conditions,
+                }
+
+                return (
                 <button
                   key={location.id}
-                  onClick={() => handleLocationSelect(location)}
-                  className={`
+                  onClick={() => onViewDetails(locationData)}
+                  className="
                     group relative overflow-hidden rounded-xl min-h-[280px] md:min-h-0
-                    transition-all duration-500 text-left
-                    ${selectedLocation?.id === location.id 
-                      ? 'scale-[1.02]' 
-                      : 'hover:scale-[1.01]'
-                    }
-                  `}
+                    transition-all duration-500 text-left hover:scale-[1.01]
+                  "
                   style={{
-                    border: selectedLocation?.id === location.id 
-                      ? '0.5px solid rgba(255,255,255,0.5)' 
-                      : '0.5px solid rgba(255,255,255,0.1)',
+                    border: '0.5px solid rgba(255,255,255,0.1)',
                   }}
                 >
                   {/* Background Image */}
@@ -553,7 +578,8 @@ export function TheMatch({ searchQuery, onBack }: TheMatchProps) {
                     </div>
                   </div>
                 </button>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

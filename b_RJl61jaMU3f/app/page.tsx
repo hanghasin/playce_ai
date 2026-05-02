@@ -3,9 +3,10 @@
 import { useState, useCallback } from 'react'
 import { TheAbyss } from '@/components/playce/the-abyss'
 import { TheMatch } from '@/components/playce/the-match'
+import { TheCalibration } from '@/components/playce/the-calibration'
 import { TheMatrix } from '@/components/playce/the-matrix'
 
-type Page = 'abyss' | 'match' | 'matrix'
+type Page = 'abyss' | 'match' | 'calibration' | 'matrix'
 
 interface MatrixLocationData {
   name: string
@@ -27,11 +28,18 @@ interface MatrixLocationData {
   }
 }
 
+interface CalibrationData {
+  skillLevel: 'NOVICE' | 'INTERMEDIATE' | 'PRO' | 'ELITE'
+  riskAppetite: 'CHILL' | 'ADVENTURE' | 'EXTREME'
+  budgetRange: 'ESSENTIAL' | 'MID-RANGE' | 'LUXE'
+}
+
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<Page>('abyss')
   const [searchQuery, setSearchQuery] = useState('')
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [matrixLocation, setMatrixLocation] = useState<MatrixLocationData | null>(null)
+  const [selectedLocation, setSelectedLocation] = useState<MatrixLocationData | null>(null)
+  const [calibrationData, setCalibrationData] = useState<CalibrationData | null>(null)
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query)
@@ -49,6 +57,8 @@ export default function Home() {
     setTimeout(() => {
       setCurrentPage('abyss')
       setSearchQuery('')
+      setSelectedLocation(null)
+      setCalibrationData(null)
       setIsTransitioning(false)
     }, 600)
   }, [])
@@ -58,13 +68,35 @@ export default function Home() {
     
     setTimeout(() => {
       setCurrentPage('match')
-      setMatrixLocation(null)
+      setSelectedLocation(null)
+      setCalibrationData(null)
       setIsTransitioning(false)
     }, 600)
   }, [])
 
+  const handleBackToCalibration = useCallback(() => {
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('calibration')
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  // View Details triggers calibration (Page 3)
   const handleViewDetails = useCallback((locationData: MatrixLocationData) => {
-    setMatrixLocation(locationData)
+    setSelectedLocation(locationData)
+    setIsTransitioning(true)
+    
+    setTimeout(() => {
+      setCurrentPage('calibration')
+      setIsTransitioning(false)
+    }, 600)
+  }, [])
+
+  // Proceed from calibration to matrix (Page 4)
+  const handleProceedToMatrix = useCallback((calibration: CalibrationData) => {
+    setCalibrationData(calibration)
     setIsTransitioning(true)
     
     setTimeout(() => {
@@ -98,10 +130,18 @@ export default function Home() {
         />
       )}
 
-      {currentPage === 'matrix' && matrixLocation && (
-        <TheMatrix 
-          location={matrixLocation}
+      {currentPage === 'calibration' && selectedLocation && (
+        <TheCalibration 
+          location={selectedLocation}
           onBack={handleBackToMatch}
+          onProceed={handleProceedToMatrix}
+        />
+      )}
+
+      {currentPage === 'matrix' && selectedLocation && (
+        <TheMatrix 
+          location={selectedLocation}
+          onBack={handleBackToCalibration}
           onConfirm={handleConfirm}
         />
       )}

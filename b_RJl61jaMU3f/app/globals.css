@@ -179,3 +179,22 @@
   font-family: 'Monument Grotesk', 'Monument Extended', Arial, system-ui, sans-serif;
   letter-spacing: -0.02em;
 }
+
+/* Grid flicker animation for calibration page */
+@keyframes gridFlicker {
+  0% { opacity: 0.08; }
+  10% { opacity: 0.25; }
+  20% { opacity: 0.05; }
+  30% { opacity: 0.18; }
+  40% { opacity: 0.08; }
+  50% { opacity: 0.22; }
+  60% { opacity: 0.06; }
+  70% { opacity: 0.15; }
+  80% { opacity: 0.08; }
+  90% { opacity: 0.12; }
+  100% { opacity: 0.08; }
+}
+
+.grid-flicker > div {
+  animation: gridFlicker 0.3s ease-out;
+}
